@@ -24,8 +24,12 @@ body {
   font-size: 20px;
   font-weight: bold;
 }
-.game-status {
+.game-status:hover {
   cursor: pointer;
+  background-color: black;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .game-status.hover {
   background-color: cornflowerblue;

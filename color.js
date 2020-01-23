@@ -1,20 +1,27 @@
 window.onload = function() {
-  var SQUARES_LENGTH = 6;
-  var correctIndex = Math.floor(Math.random() * 6);
+  let SQUARES_LENGTH = 6;
+  var correctIndex = Math.floor(Math.random() * SQUARES_LENGTH);
   var colorForCorrectIndex = generateRandomColor();
   var gameStatus = true;
   document.querySelector(".guess-color").innerHTML = colorForCorrectIndex;
-  const colors = formColorSquares(
-    SQUARES_LENGTH,
-    correctIndex,
-    colorForCorrectIndex
-  );
-  renderColorsArray(colors);
-  computeGameStatus(gameStatus);
-  addEventListenersToSquares(colorForCorrectIndex);
+
+  function formLevels() {
+    // var sectionToShowLevels = document.getElementsByClassName("select-level");
+    // console.log("formlevels", sectionToShowLevels);
+    // var easyDiv = document.createElement("Div");
+    // var easytextnode = document.createTextNode("Easy");
+    // easyDiv[0].appendChild(easytextnode);
+    // console.log(easyDiv);
+    // sectionToShowLevels.appendChild(easyDiv);
+    // var hardDiv = document.createElement("Div");
+    // var hardtextnode = document.createTextNode("Hard");
+    // hardDiv[1].appendChild(hardtextnode);
+    // console.log(hardDiv);
+    // sectionToShowLevels.appendChild(hardDiv);
+  }
 
   function formColorSquares(length, correctIndex, colorForCorrectIndex) {
-    const colors = [];
+    var colors = [];
     for (i = 0; i < length; i++) {
       let colorObj = {};
       colorObj = {
@@ -26,12 +33,25 @@ window.onload = function() {
     return colors;
   }
 
+  function reset(length) {
+    computeGameStatus(true);
+    document.querySelector(".color-code").style.backgroundColor = "black";
+    formLevels();
+    var correctIndex = Math.floor(Math.random() * length);
+    var colorForCorrectIndex = generateRandomColor();
+    var colors = formColorSquares(
+      SQUARES_LENGTH,
+      correctIndex,
+      colorForCorrectIndex
+    );
+    renderColorsArray(colors);
+    addEventListenersToSquares(colorForCorrectIndex);
+  }
+
   function computeGameStatus(gameStatus) {
     var gameStatusDisplay = document.querySelector(".game-status");
     gameStatusDisplay.innerHTML = gameStatus ? "NEW COLORS" : "PLAY AGAIN!!";
-    gameStatusDisplay.addEventListener("click", () =>
-      document.location.reload()
-    );
+    gameStatusDisplay.addEventListener("click", () => reset(SQUARES_LENGTH));
   }
 
   function renderColorsArray(squares) {
@@ -48,8 +68,22 @@ window.onload = function() {
       "</div>";
   }
 
+  function showGameCompleteAppColors(
+    nodeList,
+    guessColorContainer,
+    colorForCorrectIndex
+  ) {
+    gameStatus = false;
+    computeGameStatus(gameStatus);
+    guessColorContainer.style.backgroundColor = colorForCorrectIndex;
+    nodeList.forEach(node => {
+      node.style.visibility = "visible";
+      node.style.backgroundColor = colorForCorrectIndex;
+    });
+  }
+
   function addEventListenersToSquares(colorForCorrectIndex) {
-    const nodeList = document.querySelectorAll(".box");
+    var nodeList = document.querySelectorAll(".box");
     nodeList.forEach(node => {
       node.addEventListener("click", () => {
         if (
@@ -62,28 +96,26 @@ window.onload = function() {
             colorForCorrectIndex
           );
         } else {
-          node.style.backgroundColor = "transparent";
+          node.style.visibility = "hidden";
         }
       });
     });
   }
-  function showGameCompleteAppColors(
-    nodeList,
-    guessColorContainer,
-    colorForCorrectIndex
-  ) {
-    gameStatus = false;
-    computeGameStatus(gameStatus);
-    guessColorContainer.style.backgroundColor = colorForCorrectIndex;
-    nodeList.forEach(node => {
-      node.style.backgroundColor = colorForCorrectIndex;
-    });
-  }
+
   function generateRandomColor() {
-    var x = Math.floor(Math.random() * 256);
-    var y = Math.floor(Math.random() * 256);
-    var z = Math.floor(Math.random() * 256);
-    var bgColor = "rgb(" + x + "," + y + "," + z + ")";
+    const x = Math.floor(Math.random() * 256);
+    const y = Math.floor(Math.random() * 256);
+    const z = Math.floor(Math.random() * 256);
+    const bgColor = "rgb(" + x + "," + y + "," + z + ")";
     return bgColor;
   }
+  formLevels();
+  const colors = formColorSquares(
+    SQUARES_LENGTH,
+    correctIndex,
+    colorForCorrectIndex
+  );
+  renderColorsArray(colors);
+  computeGameStatus(gameStatus);
+  addEventListenersToSquares(colorForCorrectIndex);
 };
